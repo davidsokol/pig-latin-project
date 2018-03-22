@@ -14,7 +14,7 @@ import com.project.utils.UtilService;
 
 /**
  * @author Dávid Sokol
- *
+ 
  */
 public class Generator {
 
