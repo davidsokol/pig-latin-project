@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.project;
+package com.project.service;
 
 import java.util.Scanner;
 
@@ -29,7 +29,7 @@ public class Generator {
 		try {
 			final String resultWord = getResultWord(inputWord);
 			logger.info("Original word: " + inputWord);
-			logger.info("Modified word:t" + resultWord);
+			logger.info("Modified word:" + resultWord);
 			printReturnMessage(inputWord, resultWord);
 		} catch (CharacterException e) {
 			logger.error(e.getMessage());

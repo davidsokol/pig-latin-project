@@ -9,8 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
 
-import com.project.Generator;
 import com.project.exceptions.CharacterException;
+import com.project.service.Generator;
 
 /**
  * @author JT8100897
