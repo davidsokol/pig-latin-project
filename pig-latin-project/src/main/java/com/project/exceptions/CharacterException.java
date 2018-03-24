@@ -2,10 +2,9 @@ package com.project.exceptions;
 
 public class CharacterException extends Exception {
 
-	
-	private static final long serialVersionUID = -1866578464044030905L;
-	
-	private final String message = "charakter nie je pismeno";
+	private static final long serialVersionUID = 1L;
+
+	private static final String message = "The first character is not alphabeth";
 	
 	@Override
 	public String getMessage() {

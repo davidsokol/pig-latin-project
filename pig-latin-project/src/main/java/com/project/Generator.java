@@ -10,11 +10,12 @@ import org.apache.logging.log4j.Logger;
 
 import com.project.codebooks.Constants;
 import com.project.exceptions.CharacterException;
+import com.project.exceptions.EmptyStringException;
 import com.project.utils.UtilService;
 
 /**
  * @author Dávid Sokol
- 
+ * 
  */
 public class Generator {
 
@@ -27,28 +28,29 @@ public class Generator {
 
 		try {
 			final String resultWord = getResultWord(inputWord);
-			logger.info(resultWord);
+			logger.info("Original word: " + inputWord);
+			logger.info("Modified word:t" + resultWord);
+			printReturnMessage(inputWord, resultWord);
 		} catch (CharacterException e) {
 			logger.error(e.getMessage());
 
-		} catch (StringIndexOutOfBoundsException e) {
+		} catch (EmptyStringException e) {
 			logger.error(e.getMessage());
-
 		} finally {
 			reader.close();
 		}
 
 	}
 
-	private static String getResultWord(String inputWord) throws CharacterException {
+	public static String getResultWord(String inputWord) throws CharacterException {
 		String result = new String();
-		final String[] array = inputWord.split(Constants.SEPARATOR);
+		final String[] inputWords = inputWord.split(Constants.SEPARATOR);
 
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < inputWords.length; i++) {
 			if (i > 0) {
 				result += Constants.SEPARATOR;
 			}
-			result += proccessResultWord(array[i]);
+			result += proccessResultWord(inputWords[i]);
 		}
 		return result;
 	}
@@ -57,25 +59,30 @@ public class Generator {
 		StringBuilder resultString = new StringBuilder();
 		UtilService utilService = new UtilService();
 
-		if (inputWord.endsWith(Constants.WAY_PERFIX)) {
-			resultString.append(inputWord);
-			return resultString.toString();
-		}
+		if (!inputWord.isEmpty()) {
 
-		if (utilService.isConsonants(inputWord.toLowerCase().charAt(0))) {
-			resultString.append(inputWord.substring(1, inputWord.length()).toLowerCase()).append(inputWord.substring(0, 1).toLowerCase())
-					.append(Constants.CONSONANT_PERFIX);
-		}
+			if (inputWord.endsWith(Constants.WAY_PERFIX)) {
+				resultString.append(inputWord);
+				return resultString.toString();
+			}
 
-		if (utilService.isVowel(inputWord.toLowerCase().charAt(0))) {
-			resultString.append(inputWord).append(Constants.VOWEL_PERFIX);
-		}
+			if (utilService.isConsonants(inputWord.toLowerCase().charAt(0))) {
+				resultString.append(inputWord.substring(1, inputWord.length()).toLowerCase()).append(inputWord.substring(0, 1).toLowerCase())
+						.append(Constants.CONSONANT_PERFIX);
+			}
 
-		return capitalizationMustRemain(inputWord, resultString);
+			if (utilService.isVowel(inputWord.toLowerCase().charAt(0))) {
+				resultString.append(inputWord).append(Constants.VOWEL_PERFIX);
+			}
+
+			return capitalizationAndPunctuation(inputWord, resultString);
+
+		}
+		throw new EmptyStringException();
 
 	}
 
-	private static String capitalizationMustRemain(String inputWord, StringBuilder resultString) {
+	private static String capitalizationAndPunctuation(String inputWord, StringBuilder resultString) {
 
 		for (int i = 0; i < inputWord.toCharArray().length; i++) {
 			if (Character.isUpperCase(inputWord.charAt(i))) {
@@ -89,5 +96,9 @@ public class Generator {
 		}
 		return resultString.toString();
 	};
+	
+	private static void printReturnMessage(String inputWord, String resultWord) {
+		System.out.println("Input word:" + inputWord + " was modified to:" + resultWord);
+	}
 
 }
