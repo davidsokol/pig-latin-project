@@ -15,6 +15,7 @@ import com.project.utils.UtilService;
 
 /**
  * @author Dávid Sokol
+ * Test
  * 
  */
 public class Generator {
@@ -44,11 +45,12 @@ public class Generator {
 
 	public static String getResultWord(String inputWord) throws CharacterException {
 		String result = new String();
-		final String[] inputWords = inputWord.split(Constants.SEPARATOR);
+		String separator = inputWord.contains(Constants.SEPARATOR)?Constants.SEPARATOR:Constants.SEPARATOR_SPACE;
 
+		final String[] inputWords = inputWord.split(separator);
 		for (int i = 0; i < inputWords.length; i++) {
 			if (i > 0) {
-				result += Constants.SEPARATOR;
+				result += separator;
 			}
 			result += proccessResultWord(inputWords[i]);
 		}
@@ -61,18 +63,18 @@ public class Generator {
 
 		if (!inputWord.isEmpty()) {
 
-			if (inputWord.endsWith(Constants.WAY_PERFIX)) {
+			if (inputWord.endsWith(Constants.WAY_PREFIX)) {
 				resultString.append(inputWord);
 				return resultString.toString();
 			}
 
 			if (utilService.isConsonants(inputWord.toLowerCase().charAt(0))) {
 				resultString.append(inputWord.substring(1, inputWord.length()).toLowerCase()).append(inputWord.substring(0, 1).toLowerCase())
-						.append(Constants.CONSONANT_PERFIX);
+						.append(Constants.CONSONANT_PREFIX);
 			}
 
 			if (utilService.isVowel(inputWord.toLowerCase().charAt(0))) {
-				resultString.append(inputWord).append(Constants.VOWEL_PERFIX);
+				resultString.append(inputWord).append(Constants.VOWEL_PREFIX);
 			}
 
 			return capitalizationAndPunctuation(inputWord, resultString);
